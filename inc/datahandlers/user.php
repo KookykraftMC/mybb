@@ -118,6 +118,16 @@ class UserDataHandler extends DataHandler
 			$this->set_error('invalid_username_length', array($mybb->settings['minnamelength'], $mybb->settings['maxnamelength']));
 			return false;
 		}
+		
+		//verify username is a valid minecraft username
+		require_once MYBB_ROOT.'inc/MinecraftUUID.php';
+		$mcprofile = ProfileUtils::getProfile($username);
+		
+		if ($mcprofile == null) {
+			//minecraft username does not exist
+			$this->set_error('invalid_minecraft_username');
+			return false;
+		}
 
 		return true;
 	}
